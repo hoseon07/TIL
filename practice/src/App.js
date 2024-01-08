@@ -11,6 +11,7 @@ import Api from "./page/ApiConnect"
 import React_Modal from "./page/React_Modal"
 import VWVH from "./page/vh, vw"
 import ReactHookForm from "./page/react-hook-form"
+import Dropdown from "./page/Dropdown"
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Modal" element={<React_Modal /> } />
         <Route path="/VWVH" element={<VWVH />} />
         <Route path="reacthookform" element={<ReactHookForm />} />
+        <Route path="Dropdown" element={<Dropdown />} />
       </Routes>
     </BrowserRouter>
   )
