@@ -8,7 +8,7 @@ const app = express();
 const port: Number = Number(process.env.PORT) || 8000;
 
 app.use(cors({ // cors(Cross Origin Resource Sharing = 교차 출처 리소스 허용)
-  origin: "*",
+  origin: "*", //주소 설정
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // 허용하는 메소드는 이것보다 훨씬 많음
   credentials: true, // 인증할 때 사용하는 것 (Origin을 전체 허용을 하면 사용할 필요 없음 -> 동작을 하지 않기 때문에)
 }))
