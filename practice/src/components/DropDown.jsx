@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const DrowDown = () => {
+export default function DrowDown () {
   const [isDropdownView, setDropdownView] = useState(false);
 
   const handleClickContainer = () => {
@@ -18,9 +18,8 @@ const DrowDown = () => {
       <label onClick={handleClickContainer}>
         <button>Dropdown Menu{isDropdownView ? "R" : "E"}</button>
       </label>
-      {isDropdownView && <Dropdown />}
+      {/* {isDropdownView && <Dropdown />} */}
     </div>
   )
 }
 
-export default DrowDown
