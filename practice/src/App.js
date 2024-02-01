@@ -10,9 +10,8 @@ import Ex from "./page/useMediaQuery"
 import Api from "./page/ApiConnect"
 import React_Modal from "./page/React_Modal"
 import VWVH from "./page/vh, vw"
-import ReactHookForm from "./page/react-hook-form"
-import Dropdown from "./page/Dropdown"
 import Project from "./page/Carousel"
+import Paging from "./page/Pagination"
 
 
 
@@ -25,9 +24,8 @@ function App() {
         <Route path="/responsive" element={<Ex />} />
         <Route path="/Modal" element={<React_Modal /> } />
         <Route path="/VWVH" element={<VWVH />} />
-        <Route path="/reacthookform" element={<ReactHookForm />} />
-        <Route path="/Dropdown" element={<Dropdown />} />
         <Route path="/Carousel" element={<Project />} />
+        <Route path="/Pagination" element={<Paging />} />
       </Routes>
     </BrowserRouter>
   )
