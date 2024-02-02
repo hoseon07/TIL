@@ -11,7 +11,7 @@ import Api from "./page/ApiConnect"
 import React_Modal from "./page/React_Modal"
 import VWVH from "./page/vh, vw"
 import Project from "./page/Carousel"
-import Paging from "./page/Pagination"
+import Pagination from "./page/Pagination"
 
 
 
@@ -25,7 +25,7 @@ function App() {
         <Route path="/Modal" element={<React_Modal /> } />
         <Route path="/VWVH" element={<VWVH />} />
         <Route path="/Carousel" element={<Project />} />
-        <Route path="/Pagination" element={<Paging />} />
+        <Route path="/Pagination" element={<Pagination />} />
       </Routes>
     </BrowserRouter>
   )
