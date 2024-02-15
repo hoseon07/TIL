@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserEntity } from './model/user.entity';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({ 
   imports: [
@@ -21,6 +22,14 @@ import { UserEntity } from './model/user.entity';
         database: "hoseon",
         entities: [UserEntity],
         synchronize: true,
+    }),
+    RedisModule.forRoot({
+      readyLog: true,
+      config: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+        password: process.env.REDIS_PASSWORD
+      },
     }),
     AuthModule
   ],
