@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/model/user.entity';
@@ -8,6 +8,7 @@ import { compareSync } from 'bcrypt';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { JwtService } from '@nestjs/jwt';
 import { access } from 'fs/promises';
+import { verify } from 'crypto';
 
 
 @Injectable()
@@ -17,13 +18,14 @@ export class AuthService {
     @InjectRedis() private readonly redis: Redis,
     private readonly jwt: JwtService
   ) {}
+
   generateAccessToken = async (userId: number) => { // 유저 정보를 알기 위해서는 accesstoken 사용
     const accesstoken = await this.jwt.signAsync({id: userId}, {
       expiresIn: "3h",
       secret: process.env.SECRET
     })
 
-    await this.redis.set(String(userId), accesstoken);
+    await this.redis.set(accesstoken, String(userId));
 
     return accesstoken;
 
@@ -55,4 +57,33 @@ export class AuthService {
       refreshtoken
     }
   }
+  
+  verifyRefresh = async (refreshToken: string) => {
+    try {
+    if(!refreshToken.includes(" ")) throw new BadRequestException();
+    const refresh = refreshToken.split(" ")[1]
+    const access = await this.redis.get(refresh) //옛날 access token(만료됨 -> 필요 X)
+    const userId = await this.redis.get(access)       // userId로만 사용됨
+    await this.redis.del(access)                      // 저장이 완료 되었으므로 삭제
+    await this.redis.del(refresh)                // 저장이 완료 되었으므로 삭제
+    
+    if(!this.jwt.verifyAsync(refresh, {
+      secret: process.env.SECRET
+    })) throw new UnauthorizedException();
+
+    const newAccess = await this.generateAccessToken(Number(userId))
+    await this.redis.set(refresh, newAccess);
+    await this.redis.set(newAccess, userId);
+
+    return {
+      id: userId,
+      newAccess,
+      refresh
+    }
+  } catch(e) {
+    console.error(e);
+    return e
+  }
+  }
 }
+
