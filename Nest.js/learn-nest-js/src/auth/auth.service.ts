@@ -62,10 +62,10 @@ export class AuthService {
     try {
     if(!refreshToken.includes(" ")) throw new BadRequestException();
     const refresh = refreshToken.split(" ")[1]
-    const access = await this.redis.get(refresh) //옛날 access token(만료됨 -> 필요 X)
+    const access = await this.redis.get(refresh)      //옛날 access token(만료됨 -> 필요 X)
     const userId = await this.redis.get(access)       // userId로만 사용됨
     await this.redis.del(access)                      // 저장이 완료 되었으므로 삭제
-    await this.redis.del(refresh)                // 저장이 완료 되었으므로 삭제
+    await this.redis.del(refresh)                     // 저장이 완료 되었으므로 삭제
     
     if(!this.jwt.verifyAsync(refresh, {
       secret: process.env.SECRET
